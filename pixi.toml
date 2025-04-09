@@ -1,0 +1,73 @@
+[project]
+authors = ["fecet <xiezej@gmail.com>"]
+channels = ["https://prefix.dev/meta-forge", "conda-forge"]
+description = "Add a short description here"
+name = "sglang"
+platforms = ["linux-64"]
+version = "0.1.0"
+preview = ["pixi-build"]
+
+[system-requirements]
+cuda = "12.7"
+
+[tasks]
+
+[dependencies]
+cuda = "12.6.*"
+torchvision = "*"
+pytorch = { version = "==2.6.0", build = "*cuda*" }
+python = "3.10.*"
+pip = "*"
+opencv = "*"
+torchaudio = { version = "==2.6.0", build = "*cuda*" }
+ffmpeg = "*"
+aiohttp = "*"
+tqdm = "*"
+requests = "*"
+ipython = "*"
+numpy = "*"
+setproctitle = "*"
+compressed-tensors = "*"
+datasets = "*"
+fastapi = "*"
+hf-transfer = "*"
+interegular = "*"
+orjson = "*"
+packaging = "*"
+pillow = "*"
+psutil = "*"
+pydantic = "*"
+nvidia-ml-py = "*"
+python-multipart = "*"
+pyzmq = "*"
+transformers = "*"
+uvicorn = "*"
+uvloop = "*"
+xgrammar = "*"
+outlines = "*"
+partial-json-parser = "*"
+einops = "*"
+openai = "*"
+tiktoken = "*"
+decord = "*"
+huggingface_hub = "*"
+prometheus_client = "*"
+pysoundfile = "*"
+torchao = "*"
+flashinfer = "*"
+
+[environments]
+default = ["kernel"]
+kernel = ["kernel-dev"]
+
+[feature.kernel.dependencies]
+sgl-kernel = "*"
+
+[feature.kernel-dev.dependencies]
+sgl-kernel = { path = "./sgl-kernel" }
+
+[pypi-dependencies]
+sglang = { path = "./python", editable = true }
+
+[activation.env]
+RATTLER_BUILD_LOG_STYLE = "plain"

@@ -1,0 +1,65 @@
+context:
+  name: "sgl-kernel"
+  version: 2025.4.4
+  nvcc_archive: cuda_nvcc-linux-x86_64-12.8.93-archive
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  - path: .
+    use_gitignore: false
+  - url: https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvcc/linux-x86_64/${{ nvcc_archive }}.tar.xz
+    sha256: 9961b3484b6b71314063709a4f9529654f96782ad39e72bf1e00f070db8210d3
+    target_directory: ${{ nvcc_archive }}
+build:
+  number: ${{ build_number }}
+  string: py${{ python | version_to_buildstring }}_cuda${{ cuda | version_to_buildstring }}_pt${{ pytorch | replace('.', '') }}_${{ hash }}_${{ build_number }}
+
+  script:
+    - if: match(cuda, '>=12.6,<12.8')
+      then:
+        - rm $PREFIX/bin/ptxas
+        - cp ${{ nvcc_archive }}/bin/ptxas $PREFIX/bin/ptxas
+    - export CUDA_HOME=$PREFIX
+    - |
+      export MAX_JOBS=$(($CPU_COUNT / 2 > 32 ? 32 : $CPU_COUNT / 2 ))
+    - export TORCH_CUDA_ARCH_LIST='7.5 8.0 8.9 9.0+PTX'
+    - export CMAKE_GENERATOR="Ninja"
+    - |
+      export CMAKE_ARGS="$CMAKE_ARGS -DSGL_KERNEL_ENABLE_SM90A=ON"
+      export CMAKE_ARGS="$CMAKE_ARGS -DBUILD_FA3=ON"
+    # - python -m uv build --wheel -Cbuild-dir=build ./sgl-kernel --color=always --verbose --no-build-isolation
+    - pip install . -vv
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+    - cmake
+    - ninja
+    - git
+    - cuda
+  host:
+    - lit
+    - pthread-stubs
+    - cuda-cudart-dev  ${{ cuda }}
+    - nvtx-c
+    - pytorch
+    - pytorch *cuda*
+    - python-ninja
+    - python
+    - python-uv
+    - pip
+    - scikit-build-core
+    - packaging
+    - psutil
+    - setuptools
+
+tests:
+  - script:
+      interpreter: python
+      content: |
+        import sgl_kernel
