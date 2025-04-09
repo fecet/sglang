@@ -1,0 +1,11 @@
+[package]
+name = "sgl-kernel"
+version = "0.8.0"
+
+[package.build]
+channels = [
+    "https://prefix.dev/pixi-build-backends",
+    "https://prefix.dev/meta-forge",
+    "conda-forge",
+]
+backend = { name = "pixi-build-rattler-build", version = "0.1.*" }

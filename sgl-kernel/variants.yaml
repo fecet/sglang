@@ -1,0 +1,21 @@
+c_compiler:
+  - gcc
+c_compiler_version:
+  - "12"
+c_stdlib:
+  - sysroot
+c_stdlib_version:
+  - "2.17"
+cxx_compiler:
+  - gxx
+cxx_compiler_version:
+  - "12"
+python:
+  - "3.10"
+pytorch:
+  # - 2.4.1
+  # - 2.5.1
+  - 2.6.0
+cuda:
+  # - 12.4.*
+  - 12.6.*

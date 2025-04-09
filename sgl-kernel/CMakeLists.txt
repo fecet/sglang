@@ -10,6 +10,7 @@ set(BUILD_FA3, OFF)
 find_package(Python COMPONENTS Interpreter Development.Module ${SKBUILD_SABI_COMPONENT} REQUIRED)
 
 enable_language(CUDA)
+find_package(CUDA REQUIRED)
 find_package(CUDAToolkit REQUIRED)
 
 message(STATUS "Detected CUDA_VERSION=${CUDA_VERSION}")
